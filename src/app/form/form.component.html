@@ -1,0 +1,79 @@
+<form class="form">
+  <div class="form-title"><h3>Напишите нам</h3></div>
+  <div class="form__wrapper">
+    <div class="input-item">
+      <label for="name">Ваше имя: </label>
+      <input
+        (blur) = "inputCheckName()"
+        (focus) = " inputCheckName()"
+        id="inputName"
+        class="input input-name"
+        name="name"
+        type="text">
+    </div>
+    <p *ngIf="errorNameMessage.length != 0 " class="error-message">{{errorNameMessage}}</p>
+    <div class="input-item">
+      <label for="email">Ваш Email: </label>
+      <input
+        (blur) = "inputCheckEmail()"
+        (focus) = " inputCheckEmail()"
+        id="inputEmail"
+        class="input input-email"
+        name="email"
+        type="text">
+    </div>
+    <p *ngIf="errorEmailMessage.length != 0" class="error-message">{{errorEmailMessage}}</p>
+    <div class="input-item">
+      <label for="number-phone">Ваш телефон: </label>
+      <input
+        [imask] = "{mask: '+7 (000) 000-00-00'}"
+        [unmask] = "true"
+        (blur) = "inputCheckPhone()"
+        (focus) = "inputCheckPhone()"
+        id="inputPhone"
+        class="input input-number-phone"
+        name="number-phone"
+        type="text">
+    </div>
+    <p
+      *ngIf="errorPhoneMessage.length != 0"
+      class="error-message">{{errorPhoneMessage}}
+    </p>
+    <div class="input-item">
+      <label for="theme">Тема: </label>
+      <select class="input" name="theme">
+        <ng-container *ngIf="response">
+          <option
+            value="{{indexTheme}}}"
+            *ngFor="let theme of response.themes; let indexTheme = index">
+            {{theme.nameTheme}}
+          </option>
+        </ng-container>>
+      </select>
+    </div>
+    <div class="input-item">
+      <label for="text-message">Ваше сообщение: </label>
+      <textarea
+        (blur) = "inputCheckText()"
+        (focus) = "inputCheckText()"
+        id = "inputText"
+        class="input text-message"
+        name="text-message"
+        type="text"></textarea>
+    </div>
+    <p
+      *ngIf="errorTextMessage.length != 0 "
+      class="error-message">
+      {{errorTextMessage}}
+    </p>
+    <div class="input-item number-wrapper">
+      <label for="captcha">Цифры: </label>
+      <input
+        class="input input-captcha"
+        name="captcha"
+        type="text">
+      <img class="img-captcha" src="../../assets/icon/img-captcha.png" alt="">
+    </div>
+    <button type="submit" class="btn-submit">Отправить письмо!</button>
+  </div>
+</form>

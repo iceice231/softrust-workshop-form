@@ -1,0 +1,9 @@
+{
+  "themes": [
+    {"nameTheme" : "Техподдержка"},
+    {"nameTheme" : "Продажи"},
+    {"nameTheme" : "Другое"},
+    {"nameTheme" : "Еще один пункт"}
+  ]
+}
+
