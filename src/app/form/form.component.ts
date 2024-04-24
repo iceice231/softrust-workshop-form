@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 import {IMaskModule} from "angular-imask";
 import {NgForOf, NgIf} from "@angular/common";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, FormBuilder, FormControl, ReactiveFormsModule, FormGroup} from "@angular/forms";
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 
@@ -16,7 +16,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
     FormsModule,
     HttpClientModule,
     NgForOf,
-
+    ReactiveFormsModule
   ],
   templateUrl: './form.component.html',
   styleUrl: './form.component.css'
@@ -25,6 +25,14 @@ export class FormComponent implements OnInit {
   constructor(private httpClient: HttpClient) {
 
   }
+
+  appealForm = new FormGroup({
+    nameUser: new FormControl(""),
+    emailUser: new FormControl(""),
+    phoneUser: new FormControl(""),
+    textUser: new FormControl(""),
+  })
+
   errorEmailMessage: string = "";
   errorPhoneMessage: string = "";
   errorNameMessage: string = "";
@@ -37,44 +45,48 @@ export class FormComponent implements OnInit {
         this.response = response;
       })
   }
-  checkEmptyInput(input: HTMLInputElement, nameInput: string): string {
+  checkEmptyInput(inputValue:string, nameInput: string): string {
     let errorMessage = ''
-    if (input.value == "") {
+    if (inputValue.valueOf() == "") {
       return errorMessage = `Поле ${nameInput} не должно быть пустым`
     } else {
       return errorMessage;
     }
   }
   inputCheckEmail(): string {
-    let inputEmail = document.getElementById("inputEmail") as HTMLInputElement;
     let regax =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-    if (inputEmail.value == ""){
+    if (this.appealForm.get("emailUser")?.value == ""){
       return this.errorEmailMessage = "Поле Email не должно быть пустым";
     }
-    if (!regax.test(inputEmail.value)) {
+    if (!regax.test(<string>this.appealForm.get("emailUser")?.value)) {
       return this.errorEmailMessage = "Некорректно введен Email"
     }
     return this.errorEmailMessage = "";
   }
   inputCheckPhone(): string {
-    let inputPhone = document.getElementById("inputPhone") as HTMLInputElement;
-    if (inputPhone.value.length < 18 && inputPhone.value.length >= 1) {
+    // @ts-ignore
+    if (this.appealForm.get("phoneUser")?.value?.length < 10 && this.appealForm.get("phoneUser")?.value?.length >= 1) {
       return this.errorPhoneMessage = "Некорректно введен телефон"
     }
-    this.errorPhoneMessage = this.checkEmptyInput(inputPhone, "Телефон")
+    this.errorPhoneMessage = this.checkEmptyInput(<string>this.appealForm.get("phoneUser")?.value, "Телефон")
     return this.errorPhoneMessage;
   }
   inputCheckName(): string {
-    let inputName = document.getElementById("inputName") as HTMLInputElement;
-    this.errorNameMessage = this.checkEmptyInput(inputName, "Имя")
+    this.errorNameMessage = this.checkEmptyInput(<string>this.appealForm.get("nameUser")?.value, "Имя")
     return this.errorNameMessage;
   }
   inputCheckText(): string {
-    let inputText = document.getElementById("inputText") as HTMLInputElement;
-    this.errorTextMessage = this.checkEmptyInput(inputText, "Сообщение")
+    this.errorTextMessage = this.checkEmptyInput(<string>this.appealForm.get("textUser")?.value, "Сообщение")
     return this.errorTextMessage;
+  }
+
+  validationForm() {
+    this.inputCheckName();
+    this.inputCheckPhone();
+    this.inputCheckEmail();
+    this.inputCheckText();
   }
   ngOnInit() {
     this.getThemes()

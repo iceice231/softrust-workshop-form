@@ -1,11 +1,10 @@
-<form class="form">
+<form class="form" [formGroup]="appealForm">
   <div class="form-title"><h3>Напишите нам</h3></div>
   <div class="form__wrapper">
     <div class="input-item">
       <label for="name">Ваше имя: </label>
       <input
-        (blur) = "inputCheckName()"
-        (focus) = " inputCheckName()"
+        formControlName="nameUser"
         id="inputName"
         class="input input-name"
         name="name"
@@ -15,8 +14,7 @@
     <div class="input-item">
       <label for="email">Ваш Email: </label>
       <input
-        (blur) = "inputCheckEmail()"
-        (focus) = " inputCheckEmail()"
+        formControlName="emailUser"
         id="inputEmail"
         class="input input-email"
         name="email"
@@ -28,8 +26,7 @@
       <input
         [imask] = "{mask: '+7 (000) 000-00-00'}"
         [unmask] = "true"
-        (blur) = "inputCheckPhone()"
-        (focus) = "inputCheckPhone()"
+        formControlName = "phoneUser"
         id="inputPhone"
         class="input input-number-phone"
         name="number-phone"
@@ -54,8 +51,7 @@
     <div class="input-item">
       <label for="text-message">Ваше сообщение: </label>
       <textarea
-        (blur) = "inputCheckText()"
-        (focus) = "inputCheckText()"
+        formControlName = "textUser"
         id = "inputText"
         class="input text-message"
         name="text-message"
@@ -74,6 +70,6 @@
         type="text">
       <img class="img-captcha" src="../../assets/icon/img-captcha.png" alt="">
     </div>
-    <button type="submit" class="btn-submit">Отправить письмо!</button>
+    <button (click) = "validationForm()" class="btn-submit">Отправить письмо!</button>
   </div>
 </form>
